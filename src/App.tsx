@@ -308,7 +308,7 @@ export default function App() {
               <div className="space-y-8">
                 {chapterPoints.map((p) => (
                   <div key={p.id} className="relative group/num">
-                    <div className="absolute -left-16 top-8 w-10 h-10 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center text-xs font-black text-slate-400 group-hover/num:bg-primary group-hover/num:text-white group-hover/num:border-primary group-hover/num:shadow-lg transition-all hidden xl:flex">
+                    <div className="absolute -left-14 xl:-left-16 top-8 w-10 h-10 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center text-xs font-black text-slate-400 group-hover/num:bg-primary group-hover/num:text-white group-hover/num:border-primary group-hover/num:shadow-lg transition-all hidden lg:flex">
                       {p.index}
                     </div>
                     <KnowledgeCard point={p} displayIndex={p.index} hideInitial={mode === "recitation"} />
@@ -456,15 +456,15 @@ export default function App() {
       </header>
 
       {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto px-8 flex items-start gap-16 pt-12 pb-32">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-start gap-8 lg:gap-16 pt-8 pb-32">
         
-        {/* Sidebar Nav (Desktop) */}
-        <aside className="hidden lg:block w-72 h-[calc(100vh-10rem)] sticky top-32 overflow-y-auto pr-6 no-scrollbar hover:pr-4 transition-all">
-          <div className="text-[10px] font-black text-slate-400 uppercase tracking-[.3em] mb-6 flex items-center justify-between">
+        {/* Sidebar Nav (Desktop/Tablet) */}
+        <aside className="hidden lg:block w-72 h-[calc(100vh-8rem)] sticky top-28 overflow-y-auto pr-4 no-scrollbar hover:pr-2 transition-all">
+          <div className="text-[10px] font-black text-slate-400 uppercase tracking-[.3em] mb-6 flex items-center justify-between border-b border-slate-100 pb-4">
             <span>章节目录 Index</span>
-            <Layers size={12} />
+            <Layers size={12} className="text-primary" />
           </div>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {CHAPTERS.map(item => {
               const isActive = activeChapter === item;
               return (
@@ -473,37 +473,40 @@ export default function App() {
                   onClick={() => {
                     setActiveChapter(item);
                     setCardIndex(0);
+                    // Smooth scroll to top when changing chapters on tablet
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className={`w-full text-left px-5 py-4 rounded-[1.5rem] transition-all flex items-center justify-between group relative overflow-hidden ${
+                  className={`w-full text-left px-5 py-5 rounded-[1.75rem] transition-all flex items-center justify-between group relative overflow-hidden ${
                     isActive 
-                    ? "bg-primary text-white shadow-2xl shadow-red-900/20 translate-x-1" 
-                    : "bg-white border border-slate-100 text-slate-500 hover:border-primary hover:text-primary hover:translate-x-1 shadow-sm"
+                    ? "bg-primary text-white shadow-xl shadow-red-900/15 translate-x-1" 
+                    : "bg-white border border-slate-100/80 text-slate-500 hover:border-primary/30 hover:text-primary hover:bg-slate-50 shadow-sm"
                   }`}
                 >
-                  <span className="text-xs font-serif font-bold italic leading-snug pr-4 z-10">{item}</span>
+                  <span className="text-[13px] font-serif font-black italic leading-tight pr-4 z-10">{item}</span>
                   <ChevronRight 
                     size={16} 
                     strokeWidth={3}
-                    className={`transition-all z-10 ${isActive ? "translate-x-0" : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"}`} 
+                    className={`transition-all z-10 flex-shrink-0 ${isActive ? "translate-x-0" : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"}`} 
                   />
                 </button>
               );
             })}
           </div>
           
-          <div className="mt-12 p-8 bg-primary text-white rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+          <div className="mt-10 p-8 bg-slate-900 text-white rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-50" />
             <h4 className="font-serif font-black italic text-xl mb-3 relative z-10">学而时习之</h4>
-            <p className="text-[10px] leading-relaxed text-slate-100 font-bold uppercase tracking-widest opacity-80 relative z-10">
+            <p className="text-[10px] leading-relaxed text-slate-300 font-bold uppercase tracking-widest opacity-80 relative z-10">
               马克思主义基本原理是关于自然、社会和人类思维发展一般规律的学说。
             </p>
-            <div className="absolute -bottom-6 -right-6 opacity-20 rotate-12 text-secondary">
+            <div className="absolute -bottom-6 -right-6 opacity-20 rotate-12 text-primary group-hover:scale-125 transition-transform duration-700">
               <Star size={100} strokeWidth={1} fill="currentColor" />
             </div>
           </div>
         </aside>
 
         {/* Dynamic Display Area */}
-        <main className="flex-1 min-h-[60vh] bg-white rounded-[4rem] shadow-[0_30px_100px_-20px_rgba(0,0,0,0.03)] border border-slate-100 overflow-hidden">
+        <main className="flex-1 min-h-[70vh] bg-white rounded-[3rem] sm:rounded-[4rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden relative">
           {renderModeContent()}
         </main>
       </div>
